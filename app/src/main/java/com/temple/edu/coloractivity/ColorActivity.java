@@ -15,22 +15,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class ColorActivity extends AppCompatActivity {
-
-    Spinner spinner;
     ArrayList<String> list;
-
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        spinner = findViewById(R.id.spinner);
         list.add("Red");
         list.add("Blue");
+        list.add("Yellow");
+        list.add("Green");
+        list.add("Black");
 
-        ColorAdapter color = new ColorAdapter(this, list);
-        spinner.setAdapter(color);
+
+        ColorAdapter adapter = new ColorAdapter(list, this);
+        spinner = findViewById(R.id.spinner);
+        spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -46,37 +47,40 @@ public class ColorActivity extends AppCompatActivity {
 
     }
 
-    class ColorAdapter extends BaseAdapter {
+}
 
-        private ArrayList<String> list;
-        private Context context;
+class ColorAdapter extends BaseAdapter {
+    private ArrayList<String> list;
+    private Context context;
 
-        public ColorAdapter(Context context, ArrayList<String> list) {
-            this.context = context;
+    public ColorAdapter(ArrayList<String> list, Context context) {
             this.list = list;
-        }
+            this.context = context;
+    }
 
-        @Override
-        public int getCount() {
-            return list.size();
-        }
+    @Override
+    public int getCount() {
+        return list.size();
+    }
 
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView;
-            
-
-            return textView;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        TextView view = new TextView(context.getApplicationContext());
+        view.setId(position);
+        view.setText(list.get(position));
+        if(position != 0) {
+            view.setBackgroundColor(Color.parseColor(list.get(position)));
         }
+        return view;
     }
 }
